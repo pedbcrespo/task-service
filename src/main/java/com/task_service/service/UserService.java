@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.task_service.model.User;
 import com.task_service.model.dto.UserDto;
+import com.task_service.model.request.UserRequest;
 import com.task_service.repository.UserRepository;
 
 @Service
@@ -19,8 +20,8 @@ public class UserService {
         return repository.findAll().stream().map(UserDto::new).collect(Collectors.toList());
     }
 
-    public User save(UserDto request) {
+    public UserDto save(UserRequest request) {
         User newUser = new User(request);
-        return repository.save(newUser);
+        return new UserDto(repository.save(newUser));
     }
 }

@@ -2,8 +2,8 @@ package com.task_service.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.task_service.model.User;
 import com.task_service.model.dto.UserDto;
+import com.task_service.model.request.UserRequest;
 import com.task_service.service.UserService;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody UserDto request) {
+    public ResponseEntity<UserDto> save(@RequestBody UserRequest request) {
         return new ResponseEntity<>(service.save(request), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.task_service.model;
 
-import com.task_service.model.dto.UserDto;
+import com.task_service.model.request.UserRequest;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,10 +17,14 @@ public class User {
     @Id
     private Long id;
     private String name;
+    private String username;
     private String email;
+    private String password;
 
-    public User(UserDto request) {
+    public User(UserRequest request) {
         this.name = request.getName();
+        this.username = request.getUsername();
         this.email = request.getEmail();
+        this.password = request.getPassword();
     }
 }
