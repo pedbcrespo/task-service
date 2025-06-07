@@ -43,6 +43,22 @@ export default {
       markerLng: null
     }
   },
+  mounted() {
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.lat = position.coords.latitude
+        this.lon = position.coords.longitude
+      },
+      error => {
+        console.error('Erro ao obter localização:', error)
+      }
+    )
+  } else {
+    console.warn('Geolocalização não suportada pelo navegador.')
+  }
+
+  },
   methods: {
     onMapClick(e) {
       this.markerLat = e.latlng.lat
