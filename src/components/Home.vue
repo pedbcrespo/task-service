@@ -1,5 +1,7 @@
 <template>
-    <map-location/>
+    <div class="home">
+        <map-location/>
+    </div>
 </template>
 <script>
 import MapLocation from './MapLocation.vue';
@@ -10,3 +12,12 @@ export default {
     }
 }
 </script>
+<style>
+.home {
+    width: 1400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+</style>
