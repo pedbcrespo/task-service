@@ -5,11 +5,14 @@
           :zoom="16"
           :center="[lat, lng]"
           @click="onMapClick"
+          @ready="onMapReady"
+          @update:center="onCenterUpdate"
         >
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <l-marker v-if="markerLat !== null" :lat-lng="[markerLat, markerLng]" />
+          <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
       
         <p v-if="markerLat !== null">
@@ -19,7 +22,7 @@
 </template>
 
 <script>
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
+import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 delete L.Icon.Default.prototype._getIconUrl
@@ -33,7 +36,9 @@ export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    LCircle,
+    LCircleMarker
   },
   data() {
     return {
@@ -62,12 +67,28 @@ export default {
     onMapClick(e) {
       this.markerLat = e.latlng.lat
       this.markerLng = e.latlng.lng
+    },
+    onMapReady(e) {
+      console.log(e);
+
+      // map.on('locationfound', (e) => {
+      //   // Círculo azul da posição
+      //   L.circle(e.latlng, {
+      //     radius: e.accuracy,
+      //     color: '#136AEC',
+      //     fillColor: '#136AEC',
+      //     fillOpacity: 0.2
+      //   }).addTo(map))
+    },
+    onCenterUpdate(e) {
+      console.log('CENTER UPDATED:', e);
     }
   },
   watch: {
     position(newPosition) {
       this.lat = newPosition.coords.latitude
       this.lng = newPosition.coords.longitude
+      console.log(this.lat, this.lng);
     }
   }
 }
