@@ -6,17 +6,16 @@
           :center="[lat, lng]"
           @click="onMapClick"
           @ready="onMapReady"
-          @update:center="onCenterUpdate"
         >
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <l-marker v-if="markerLat !== null" :lat-lng="[markerLat, markerLng]" />
+          <l-marker v-if="location.lat !== null" :lat-lng="[location.lat, location.lng]" />
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
       
-        <p v-if="markerLat !== null">
-          Local clicado: {{ markerLat }}, {{ markerLng }}
+        <p v-if="location.lat !== null">
+          Local clicado: {{ location.lat }}, {{ location.lng }}
         </p>
     </div>
 </template>
@@ -25,6 +24,8 @@
 import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import Location from '@/model/Location'
+
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png',
@@ -44,8 +45,7 @@ export default {
     return {
       lat: -22.9,
       lng: -43.2,
-      markerLat: null,
-      markerLng: null,
+      location: new Location(null, null),
       position: null,
     }
   },
@@ -65,24 +65,11 @@ export default {
   },
   methods: {
     onMapClick(e) {
-      this.markerLat = e.latlng.lat
-      this.markerLng = e.latlng.lng
+      this.location = new Location(e.latlng.lat, e.latlng.lng)
     },
     onMapReady(e) {
       console.log(e);
-
-      // map.on('locationfound', (e) => {
-      //   // Círculo azul da posição
-      //   L.circle(e.latlng, {
-      //     radius: e.accuracy,
-      //     color: '#136AEC',
-      //     fillColor: '#136AEC',
-      //     fillOpacity: 0.2
-      //   }).addTo(map))
     },
-    onCenterUpdate(e) {
-      console.log('CENTER UPDATED:', e);
-    }
   },
   watch: {
     position(newPosition) {
