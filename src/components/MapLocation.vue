@@ -2,7 +2,7 @@
     <div class="map-location">
         <l-map
           style="height: 400px;"
-          :zoom="13"
+          :zoom="16"
           :center="[lat, lng]"
           @click="onMapClick"
         >
@@ -40,15 +40,15 @@ export default {
       lat: -22.9,
       lng: -43.2,
       markerLat: null,
-      markerLng: null
+      markerLng: null,
+      position: null,
     }
   },
-  mounted() {
+  created() {
     if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.lat = position.coords.latitude
-        this.lon = position.coords.longitude
+        this.position = position
       },
       error => {
         console.error('Erro ao obter localização:', error)
@@ -57,12 +57,17 @@ export default {
   } else {
     console.warn('Geolocalização não suportada pelo navegador.')
   }
-
   },
   methods: {
     onMapClick(e) {
       this.markerLat = e.latlng.lat
       this.markerLng = e.latlng.lng
+    }
+  },
+  watch: {
+    position(newPosition) {
+      this.lat = newPosition.coords.latitude
+      this.lng = newPosition.coords.longitude
     }
   }
 }
