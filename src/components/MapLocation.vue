@@ -2,7 +2,7 @@
     <div class="map-location">
         <l-map
           style="height: 400px;"
-          :zoom="16"
+          :zoom="zoom"
           :center="[lat, lng]"
           @click="onMapClick"
           @ready="onMapReady"
@@ -45,6 +45,7 @@ export default {
     return {
       lat: -22.9,
       lng: -43.2,
+      zoom: 17,
       location: new Location(null, null),
       position: null,
     }
