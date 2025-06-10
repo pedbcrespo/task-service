@@ -13,10 +13,30 @@
           <l-marker v-if="location.lat !== null" :lat-lng="[location.lat, location.lng]" />
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
-      
+        
         <p v-if="location.lat !== null">
-          Local clicado: {{ location.lat }}, {{ location.lng }}
+          <BButton variant="primary" @click="openModal">Adicionar Demanda</BButton>
         </p>
+
+        <b-modal v-model="modal" title="Adicionar Demanda">  
+          <b-form>
+            <b-form-group>
+              <b-form-input
+                id="input-1"
+                v-model="demand.title"
+                type="email"
+                placeholder="Enter email"
+                required
+              />
+              <b-form-select
+                id="input-3"
+                v-model="demand.type"
+                :options="typeDemands"
+                required
+              />
+            </b-form-group>
+          </b-form>
+        </b-modal>
     </div>
 </template>
 
@@ -25,6 +45,7 @@ import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Location from '@/model/Location'
+import Demand from '@/model/Demand'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -48,6 +69,9 @@ export default {
       zoom: 17,
       location: new Location(null, null),
       position: null,
+      isModalOpen: false,
+      demand: new Demand(),
+      typeDemands: [],
     }
   },
   created() {
@@ -71,6 +95,9 @@ export default {
     onMapReady(e) {
       console.log(e);
     },
+    openModal() {
+      this.isModalOpen = !this.isModalOpen;
+    }
   },
   watch: {
     position(newPosition) {
