@@ -14,6 +14,7 @@
         </l-map>
         
         <p v-if="location.lat !== null">
+          {{ address.state }} - {{ address.city }} - {{ address.district }} {{ address.street }}
           <BButton variant="primary" @click="openModal">Adicionar Demanda</BButton>
         </p>
 
@@ -23,13 +24,13 @@
               <BFormInput
                 id="input-1"
                 v-model="demand.title"
-                type="email"
-                placeholder="Enter email"
+                placeholder="Nome da demanda"
                 required
               />
               <BFormSelect
                 id="input-3"
                 v-model="demand.type"
+                placeholder="Selecione a classeficação da demanda"
                 :options="typeDemands"
                 required
               />
@@ -45,8 +46,8 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Location from '@/model/Location'
 import Demand from '@/model/Demand'
-import axios from 'axios'
 import Address from '@/model/Address'
+import AddressService from '@/service/AddressService'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -72,8 +73,9 @@ export default {
       position: null,
       isModalOpen: false,
       demand: new Demand(),
-      address: null,
+      address: new Address(),
       typeDemands: [],
+      addressService: new AddressService(),
     }
   },
   created() {
@@ -93,7 +95,7 @@ export default {
   methods: {
     onMapClick(e) {
       this.location = new Location(e.latlng.lat, e.latlng.lng)
-      this.getAddress(this.location.lat, this.location.lng).then(res => {
+      this.addressService.getAddress(this.location.lat, this.location.lng).then(res => {
         this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro)
         console.log(this.address);
       })
@@ -101,39 +103,6 @@ export default {
     openModal() {
       this.isModalOpen = !this.isModalOpen;
     },
-    async getAddress(lat, lng) {
-      let address = await this.reverseGeocode(lat, lng);
-      return await this.getAddressByCep(address.postcode);
-    },
-    async reverseGeocode(lat, lon) {
-      try {
-        const url = 'https://nominatim.openstreetmap.org/reverse'
-        const params = {
-          format: 'json',
-          lat,
-          lon,
-          addressdetails: 1
-        }
-      
-        const response = await axios.get(url, {
-          params,
-          headers: {
-            'Accept-Language': 'pt-BR',
-            'User-Agent': 'task-service'
-          }
-        })
-        return response.data.address
-      
-      } catch (error) {
-        console.error('Erro ao buscar endereço:', error)
-        return null
-      }
-    },
-    async getAddressByCep(cep) {
-      let url = `https://viacep.com.br/ws/${cep}/json/`;
-      let res =  await axios.get(url);
-      return res.data;
-    }
   },
   watch: {
     position(newPosition) {
