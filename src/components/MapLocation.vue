@@ -45,7 +45,7 @@ import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Location from '@/model/Location'
-import Demand from '@/model/Demand'
+import { Demand, DemandByAddress } from '@/model/Demand'
 import Address from '@/model/Address'
 import AddressService from '@/service/AddressService'
 
