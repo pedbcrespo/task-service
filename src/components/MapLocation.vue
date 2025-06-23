@@ -12,31 +12,9 @@
           <l-marker v-if="location.lat !== null" :lat-lng="[location.lat, location.lng]" />
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
-        
-        <p v-if="location.lat !== null">
-          {{ address.state }} - {{ address.city }} - {{ address.district }} {{ address.street }}
-          <BButton variant="primary" @click="openModal">Adicionar Demanda</BButton>
-        </p>
 
-        <BModal v-model="isModalOpen" title="Adicionar Demanda">  
-          <BForm>
-            <BFormGroup>
-              <BFormInput
-                id="input-1"
-                v-model="demand.title"
-                placeholder="Nome da demanda"
-                required
-              />
-              <BFormSelect
-                id="input-3"
-                v-model="demand.type"
-                placeholder="Selecione a classeficação da demanda"
-                :options="typeDemands"
-                required
-              />
-            </BFormGroup>
-          </BForm>
-        </BModal>
+        <DemandModal :demand="demand" ref="demandModal"/>
+ 
     </div>
 </template>
 
@@ -45,9 +23,10 @@ import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Location from '@/model/Location'
-import { Demand, DemandByAddress } from '@/model/Demand'
+import Demand from '@/model/Demand'
 import Address from '@/model/Address'
 import AddressService from '@/service/AddressService'
+import DemandModal from './DemandModal.vue'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -62,19 +41,18 @@ export default {
     LTileLayer,
     LMarker,
     LCircle,
-    LCircleMarker
+    LCircleMarker,
+    DemandModal
   },
   data() {
     return {
       lat: -22.9,
       lng: -43.2,
-      zoom: 17,
+      zoom: 18,
       location: new Location(null, null),
       position: null,
-      isModalOpen: false,
       demand: new Demand(),
       address: new Address(),
-      typeDemands: [],
       addressService: new AddressService(),
     }
   },
@@ -98,11 +76,15 @@ export default {
       this.addressService.getAddress(this.location.lat, this.location.lng).then(res => {
         this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro)
         console.log(this.address);
+        this.$refs.demandModal.openModal();
       })
     },
     openModal() {
       this.isModalOpen = !this.isModalOpen;
     },
+    openForm() {
+      this.isRegisterNewDemand = !this.isRegisterNewDemand;
+    }
   },
   watch: {
     position(newPosition) {
