@@ -9,11 +9,11 @@
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <l-marker v-if="location.lat !== null" :lat-lng="[location.lat, location.lng]" />
+          <l-marker v-for="demand in demands" :lat-lng="[demand.location.lat, demand.location.lng]" />
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
 
-        <DemandModal :demand="demand" ref="demandModal"/>
+        <DemandModal @updateDemands="updateDemands" ref="demandModal"/>
  
     </div>
 </template>
@@ -23,7 +23,6 @@ import { LMap, LTileLayer, LMarker, LCircle, LCircleMarker } from '@vue-leaflet/
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import Location from '@/model/Location'
-import Demand from '@/model/Demand'
 import Address from '@/model/Address'
 import AddressService from '@/service/AddressService'
 import DemandModal from './DemandModal.vue'
@@ -49,9 +48,8 @@ export default {
       lat: -22.9,
       lng: -43.2,
       zoom: 18,
-      location: new Location(null, null),
       position: null,
-      demand: new Demand(),
+      demands: [],
       address: new Address(),
       addressService: new AddressService(),
     }
@@ -72,18 +70,14 @@ export default {
   },
   methods: {
     onMapClick(e) {
-      this.location = new Location(e.latlng.lat, e.latlng.lng)
-      this.addressService.getAddress(this.location.lat, this.location.lng).then(res => {
-        this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro)
-        console.log(this.address);
-        this.$refs.demandModal.openModal();
+      let currentLocation = new Location(e.latlng.lat, e.latlng.lng);
+      this.addressService.getAddress(currentLocation.lat, currentLocation.lng).then(res => {
+        this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro, currentLocation);
+        this.$refs.demandModal.openModal(this.address);
       })
     },
-    openModal() {
-      this.isModalOpen = !this.isModalOpen;
-    },
-    openForm() {
-      this.isRegisterNewDemand = !this.isRegisterNewDemand;
+    updateDemands(demands) {
+      this.demands = [...this.demands, demands];
     }
   },
   watch: {
