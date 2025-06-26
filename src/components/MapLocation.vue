@@ -9,11 +9,11 @@
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <l-circle-marker v-for="demand in demands" :radius="2" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]" />
-          <l-circle-marker :lat-lng="[lat, lng]" :radius="3" color="red" />
+          <l-circle-marker v-for="(demand, i) in demands" :key="i+1" :radius="3" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]" @click="() => openDemandModal(demand)"/>
+          <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
 
-        <DemandModal :demands="demands" @updateDemands="updateDemands" ref="demandModal"/>
+        <DemandModal @updateDemands="updateDemands" ref="demandModal"/>
  
     </div>
 </template>
@@ -73,10 +73,14 @@ export default {
       let currentLocation = new Location(e.latlng.lat, e.latlng.lng);
       this.addressService.getAddress(currentLocation.lat, currentLocation.lng).then(res => {
         this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro, currentLocation);
-      }).then(() => this.$refs.demandModal.openModal(this.address));
+      }).then(() => this.$refs.demandModal.openModalByAddress(this.address));
     },
-    updateDemands(demands) {
-      this.demands = demands;
+    updateDemands(demand) {
+      console.log(demand);
+      this.demands = [...this.demands, demand];
+    },
+    openDemandModal(demand) {
+      this.$refs.demandModal.openModalByDemand(demand);
     }
   },
   watch: {

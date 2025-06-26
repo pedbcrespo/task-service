@@ -34,33 +34,41 @@
     </BModal>
 </template>
 <script>
-import Address from '@/model/Address';
 import Demand from '@/model/Demand';
 import { DemandType } from '@/enums/DemandType';
 export default {
-    props: ['demands'],
+    props: [],
     data() {
         return {
             isModalOpen: false,
             isRegisterNewDemand: false,
             typeDemands: [...Object.values(DemandType)],
-            demand: new Demand(),
-            address: new Address(),
+            demand: null,
+            ischangable: false,
         }
     },
     methods: {
-        openModal(address) {
-          this.address = address;
+        openModal(isNewDemand=true, ischangable=false) {
           this.isModalOpen = true;
-          this.isRegisterNewDemand = false;
+          this.isRegisterNewDemand = !isNewDemand;
+          this.ischangable = ischangable;
+        },
+        openModalByAddress(address) {
+          if(!address) return;
+          this.demand = new Demand();
+          this.demand.setAddress(address);
+          this.openModal();
+        },
+        openModalByDemand(demand) {
+          if(!demand) return;
+          this.demand = demand;
+          this.openModal();
         },
         openForm() {
           this.isRegisterNewDemand = !this.isRegisterNewDemand;
         },
         save() {
-          this.demand.setAddress(this.address);
-          const newDemands = [...this.demands, this.demand];
-          this.$emit('updateDemands', newDemands);
+          this.$emit('updateDemands', this.demand);
           this.isModalOpen = false;
           this.isRegisterNewDemand = false;
         }
