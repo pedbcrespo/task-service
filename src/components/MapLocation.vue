@@ -10,7 +10,7 @@
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <l-circle-marker v-for="demand in demands" :radius="2" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]" />
-          <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
+          <l-circle-marker :lat-lng="[lat, lng]" :radius="3" color="red" />
         </l-map>
 
         <DemandModal :demands="demands" @updateDemands="updateDemands" ref="demandModal"/>
