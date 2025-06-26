@@ -9,11 +9,11 @@
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <l-marker v-for="demand in demands" :lat-lng="[demand.location.lat, demand.location.lng]" />
+          <l-circle-marker v-for="demand in demands" :radius="2" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]" />
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
 
-        <DemandModal @updateDemands="updateDemands" ref="demandModal"/>
+        <DemandModal :demands="demands" @updateDemands="updateDemands" ref="demandModal"/>
  
     </div>
 </template>
@@ -73,18 +73,16 @@ export default {
       let currentLocation = new Location(e.latlng.lat, e.latlng.lng);
       this.addressService.getAddress(currentLocation.lat, currentLocation.lng).then(res => {
         this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro, currentLocation);
-        this.$refs.demandModal.openModal(this.address);
-      })
+      }).then(() => this.$refs.demandModal.openModal(this.address));
     },
     updateDemands(demands) {
-      this.demands = [...this.demands, demands];
+      this.demands = demands;
     }
   },
   watch: {
     position(newPosition) {
       this.lat = newPosition.coords.latitude
       this.lng = newPosition.coords.longitude
-      console.log(this.lat, this.lng);
     }
   }
 }

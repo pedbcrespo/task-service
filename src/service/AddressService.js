@@ -16,7 +16,6 @@ export default class AddressService {
           params,
           headers: {
             'Accept-Language': 'pt-BR',
-            'User-Agent': 'task-service'
           }
         });
         return response.data.address;

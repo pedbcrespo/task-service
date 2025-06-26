@@ -13,5 +13,13 @@ export default class Demand {
         this.street = address.street;
         this.location = address.location;
     }
+
+    setAddress(address=new Address()) {
+        this.uf = address.state;
+        this.city = address.city;
+        this.district = address.district;
+        this.street = address.street;
+        this.location = address.location;
+    }
 }
 

@@ -1,16 +1,28 @@
 <template>
-    <BModal v-model="isModalOpen" title="Adicionar Demanda">
+    <BModal v-model="isModalOpen" title="Adicionar Demanda" no-footer>
       <BButton v-if="!isRegisterNewDemand" variant="primary" @click="openForm">Adicionar Demanda</BButton>
       <BForm v-if="isRegisterNewDemand">
         <BFormGroup>
           <BFormInput
-          id="input-1"
+          class="form-inputs"
           v-model="demand.title"
           placeholder="Nome da demanda"
           required
           />
+          <BFormInput
+          class="form-inputs"
+          v-model="demand.description"
+          placeholder="Descrição"
+          required
+          />
+          <BFormInput
+          class="form-inputs"
+          v-model="demand.observation"
+          placeholder="Observação"
+          required
+          />
           <BFormSelect
-          id="input-3"
+          class="form-inputs"
           v-model="demand.type"
           placeholder="Selecione a classeficação da demanda"
           :options="typeDemands"
@@ -26,6 +38,7 @@ import Address from '@/model/Address';
 import Demand from '@/model/Demand';
 import { DemandType } from '@/enums/DemandType';
 export default {
+    props: ['demands'],
     data() {
         return {
             isModalOpen: false,
@@ -38,15 +51,25 @@ export default {
     methods: {
         openModal(address) {
           this.address = address;
-          this.isModalOpen = !this.isModalOpen;
+          this.isModalOpen = true;
+          this.isRegisterNewDemand = false;
         },
         openForm() {
           this.isRegisterNewDemand = !this.isRegisterNewDemand;
         },
         save() {
-          this.$emit('updateDemands', this.demand);
-          this.isModalOpen = !this.isModalOpen;
+          this.demand.setAddress(this.address);
+          const newDemands = [...this.demands, this.demand];
+          this.$emit('updateDemands', newDemands);
+          this.isModalOpen = false;
+          this.isRegisterNewDemand = false;
         }
     }
 }
 </script>
+<style>
+.form-inputs {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+</style>
