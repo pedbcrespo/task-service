@@ -7,20 +7,20 @@
           v-model="demand.title"
           placeholder="Nome da demanda"
           required
-          :disabled="isShowDemandInfo"
+          :disabled="disabled"
           />
           <BFormInput
           class="form-inputs"
           v-model="demand.description"
           placeholder="Descrição"
           required
-          :disabled="isShowDemandInfo"
+          :disabled="disabled"
           />
           <BFormInput
           class="form-inputs"
           v-model="demand.observation"
           placeholder="Observação"
-          :disabled="isShowDemandInfo"
+          :disabled="disabled"
           />
           <BFormSelect
           class="form-inputs"
@@ -28,10 +28,10 @@
           placeholder="Selecione a classeficação da demanda"
           :options="arrDemandTypes"
           required
-          :disabled="isShowDemandInfo"
+          :disabled="disabled"
           />
         </BFormGroup>
-        <BButton variant="primary" @click="save">Salvar</BButton>
+        <BButton v-show="!disabled" variant="primary" @click="save">Salvar</BButton>
       </BForm>
   </BModal>
 </template>
@@ -44,19 +44,18 @@ export default {
   data() {
     return {
       isModalOpen: false,
+      disabled: false,
       demand: new Demand(),
       arrDemandTypes,
     };
   },
-  computed: {
-    isShowDemandInfo() {
-      return !(this.demand && this.demand.title && this.demand.getAddress().location);
-    },
-  },
   methods: {
     openModal(address) {
       if(!address) return;
-      this.demand.setAddress(address);
+      if(!this.demand.location)
+        this.demand.setAddress(address);
+      else
+        this.disabled = true;
       this.isModalOpen = true;
     },
     save() {
