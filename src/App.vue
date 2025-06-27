@@ -6,6 +6,8 @@ import Home from './components/Home.vue';
   <home/>
 </template>
 
-<style scoped>
-
+<style>
+body {
+  background-color: #646464 !important;
+}
 </style>
