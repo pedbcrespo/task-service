@@ -7,3 +7,5 @@ export const DemandType = {
     SANITATION: {key: 6, text: 'Saneamento', value: 'SANITATION'},
     SUPERFICIAL: {key: 6, text: 'Superficial', value: 'SUPERFICIAL'},
 }
+
+export const arrDemandTypes = Object.values(DemandType);
