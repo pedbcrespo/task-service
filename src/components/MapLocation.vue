@@ -76,8 +76,8 @@ export default {
       }).then(() => this.$refs.demandModal.openModal(this.address));
     },
     updateDemands(demand) {
-      console.log(demand);
       this.demands = [...this.demands, demand];
+      console.log(this.demands);
     },
     openSetDisabled() {
       this.$refs.demandModal.setDisabled(true);

@@ -1,6 +1,6 @@
 <template>
   <BModal v-model="isModalOpen" title="Adicionar Demanda" no-footer>
-      <BForm>
+      <BForm v-if="demand">
         <BFormGroup>
           <BFormInput
           class="form-inputs"
@@ -45,17 +45,15 @@ export default {
     return {
       isModalOpen: false,
       disabled: false,
-      demand: new Demand(),
+      demand: null,
       arrDemandTypes,
     };
   },
   methods: {
     openModal(address) {
       if(!address) return;
-      if(!this.demand.location)
-        this.demand.setAddress(address);
-      else
-        this.disabled = true;
+      console.log(address.location.lat, address.location.lng)
+      this.demand = new Demand(address);
       this.isModalOpen = true;
     },
     save() {
