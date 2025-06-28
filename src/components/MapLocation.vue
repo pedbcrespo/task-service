@@ -9,7 +9,7 @@
           <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <l-circle-marker v-for="(demand, i) in demands" :key="i+1" :radius="3" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]"/>
+          <l-circle-marker v-for="(demand, i) in demands" :key="i+1" :radius="3" color="blue" :lat-lng="[demand.location.lat, demand.location.lng]" @click="()=>openInfoModal(demand)"/>
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
 
@@ -50,6 +50,7 @@ export default {
       zoom: 18,
       position: null,
       demands: [],
+      isShowInfoModal: false,
       address: new Address(),
       addressService: new AddressService(),
     }
@@ -73,14 +74,19 @@ export default {
       let currentLocation = new Location(e.latlng.lat, e.latlng.lng);
       this.addressService.getAddress(currentLocation.lat, currentLocation.lng).then(res => {
         this.address = new Address(res.uf, res.localidade, res.bairro, res.logradouro, currentLocation);
-      }).then(() => this.$refs.demandModal.openModal(this.address));
+      }).then(() => {
+        if(!this.isShowInfoModal)
+          this.$refs.demandModal.openModal(this.address)
+        this.isShowInfoModal = false;
+      });
     },
     updateDemands(demand) {
       this.demands = [...this.demands, demand];
       console.log(this.demands);
     },
-    openSetDisabled() {
-      this.$refs.demandModal.setDisabled(true);
+    openInfoModal(demand) {
+      this.isShowInfoModal = true;
+      console.log(demand)
     }
   },
   watch: {
