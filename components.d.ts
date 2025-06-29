@@ -16,6 +16,7 @@ declare module 'vue' {
     BModal: typeof import('bootstrap-vue-next/components/BModal')['BModal']
     DemandModal: typeof import('./src/components/DemandModal.vue')['default']
     Home: typeof import('./src/components/Home.vue')['default']
+    InfoModal: typeof import('./src/components/InfoModal.vue')['default']
     MapLocation: typeof import('./src/components/MapLocation.vue')['default']
   }
 }

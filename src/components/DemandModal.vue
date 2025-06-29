@@ -36,8 +36,9 @@
   </BModal>
 </template>
 
-<script>
+<script lang="ts">
 import { arrDemandTypes } from '@/enums/DemandType';
+import Address from '@/model/Address';
 import Demand from '@/model/Demand';
 
 export default {
@@ -50,9 +51,9 @@ export default {
     };
   },
   methods: {
-    openModal(address) {
+    openModal(address: Address) {
       if(!address) return;
-      console.log(address.location.lat, address.location.lng)
+      console.log('MODAL OPEN')
       this.demand = new Demand(address);
       this.isModalOpen = true;
     },

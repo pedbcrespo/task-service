@@ -86,7 +86,7 @@ export default {
     },
     openInfoModal(demand) {
       this.isShowInfoModal = true;
-      console.log(demand)
+      console.log('OPEN INFO MODAL')
     }
   },
   watch: {
