@@ -2,11 +2,24 @@ import Address from "./Address";
 import Location from "./Location";
 
 export default class Demand {
-    constructor(address=new Address()) {
+    title: string;
+    type: string;
+    description: string;
+    observation: string;
+    uf: string;
+    city: string;
+    district: string;
+    street: string;
+    location: Location;
+
+    constructor(address: Address) {
         this.title = null;
         this.type = null;
         this.description = null;
         this.observation = null;
+
+        if(!address) return;
+        
         this.uf = address.state;
         this.city = address.city;
         this.district = address.district;
