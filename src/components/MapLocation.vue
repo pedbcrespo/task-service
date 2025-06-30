@@ -14,6 +14,7 @@
         </l-map>
 
         <DemandModal @updateDemands="updateDemands" ref="demandModal"/>
+        <InfoDemand ref="infoModal"/>
  
     </div>
 </template>
@@ -26,6 +27,7 @@ import Location from '@/model/Location'
 import Address from '@/model/Address'
 import AddressService from '@/service/AddressService'
 import DemandModal from './DemandModal.vue'
+import InfoDemand from './InfoDemand.vue'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -41,7 +43,8 @@ export default {
     LMarker,
     LCircle,
     LCircleMarker,
-    DemandModal
+    DemandModal,
+    InfoDemand,
   },
   data() {
     return {
@@ -50,7 +53,6 @@ export default {
       zoom: 18,
       position: null,
       demands: [],
-      isShowInfoModal: false,
       address: new Address(),
       addressService: new AddressService(),
     }
@@ -77,7 +79,6 @@ export default {
       }).then(() => {
         if(!this.isShowInfoModal)
           this.$refs.demandModal.openModal(this.address)
-        this.isShowInfoModal = false;
       });
     },
     updateDemands(demand) {
@@ -85,8 +86,8 @@ export default {
       console.log(this.demands);
     },
     openInfoModal(demand) {
-      this.isShowInfoModal = true;
-      console.log('OPEN INFO MODAL')
+      this.$refs.infoModal.openModal(demand);
+      this.$refs.demandModal.openModal(null);
     }
   },
   watch: {

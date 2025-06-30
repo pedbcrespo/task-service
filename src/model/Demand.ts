@@ -11,6 +11,7 @@ export default class Demand {
     district: string;
     street: string;
     location: Location;
+    creationDate: Date;
 
     constructor(address: Address) {
         this.title = null;
@@ -25,6 +26,8 @@ export default class Demand {
         this.district = address.district;
         this.street = address.street;
         this.location = address.location;
+
+        this.creationDate = new Date();
     }
 
     getAddress() {

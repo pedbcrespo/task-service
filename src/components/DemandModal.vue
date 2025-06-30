@@ -52,7 +52,10 @@ export default {
   },
   methods: {
     openModal(address: Address) {
-      if(!address) return;
+      if(!address) {
+        this.isModalOpen = false;
+        return;
+      };
       console.log('MODAL OPEN')
       this.demand = new Demand(address);
       this.isModalOpen = true;
