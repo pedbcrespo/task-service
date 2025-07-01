@@ -42,6 +42,12 @@ import Address from '@/model/Address';
 import Demand from '@/model/Demand';
 
 export default {
+  props:{
+    isAllowOpen: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       isModalOpen: false,
@@ -58,7 +64,7 @@ export default {
       };
       console.log('MODAL OPEN')
       this.demand = new Demand(address);
-      this.isModalOpen = true;
+      this.isModalOpen = true && this.isAllowOpen;
     },
     save() {
       this.$emit('updateDemands', this.demand);

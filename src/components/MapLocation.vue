@@ -13,7 +13,7 @@
           <l-circle-marker :lat-lng="[lat, lng]" :radius="2" color="red" />
         </l-map>
 
-        <DemandModal @updateDemands="updateDemands" ref="demandModal"/>
+        <DemandModal @updateDemands="updateDemands" :isAllowOpen="isAllowOpenDemandModal" ref="demandModal"/>
         <InfoDemand ref="infoModal"/>
  
     </div>
@@ -55,6 +55,7 @@ export default {
       demands: [],
       address: new Address(),
       addressService: new AddressService(),
+      isAllowOpenDemandModal: true,
     }
   },
   created() {
@@ -87,7 +88,7 @@ export default {
     },
     openInfoModal(demand) {
       this.$refs.infoModal.openModal(demand);
-      this.$refs.demandModal.openModal(null);
+      this.isAllowOpenDemandModal = false;
     }
   },
   watch: {
