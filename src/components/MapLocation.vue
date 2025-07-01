@@ -87,7 +87,7 @@ export default {
       console.log(this.demands);
     },
     openInfoModal(demand) {
-      this.$refs.infoModal.openModal(demand);
+      this.$refs.infoModal.open(demand);
       this.isAllowOpenDemandModal = false;
     }
   },

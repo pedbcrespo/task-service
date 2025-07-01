@@ -9,6 +9,8 @@
         <BFormInput class="form-inputs" v-model="demand.city" disabled/>
         <BFormInput class="form-inputs" v-model="demand.district" disabled/>
         <BFormInput class="form-inputs" v-model="demand.street" disabled/>
+        <hr>
+        <BButton variant="primary" @click="close">Fechar</BButton>
     </BForm>
 </template>
 <script lang="ts">
@@ -17,15 +19,18 @@ import Demand from '@/model/Demand';
 export default {
     data() {
         return {
-            isModalOpen: false,
+            isOpen: false,
             demand: null,
         }
     },
     methods: {
-        openModal(demand:Demand) {
+        open(demand:Demand) {
             if(!demand) return;
             this.demand = demand;
-            this.isModalOpen = true;
+            this.isOpen = true;
+        },
+        close() {
+            this.isOpen = false;
         }
     }
 }
