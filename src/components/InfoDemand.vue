@@ -50,6 +50,7 @@ export default {
         close() {
             this.demand = null;
             this.isOpen = false;
+            this.$emit('updateModalKey', true);
         }
     }
 }

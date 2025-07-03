@@ -14,7 +14,7 @@
         </l-map>
 
         <DemandModal @updateDemands="updateDemands" :isAllowOpen="isAllowOpenDemandModal" ref="demandModal"/>
-        <InfoDemand ref="infoModal"/>
+        <InfoDemand ref="infoModal" @updateModalKey="updateModalKey"/>
  
     </div>
 </template>
@@ -89,6 +89,9 @@ export default {
     openInfoModal(demand) {
       this.$refs.infoModal.open(demand);
       this.isAllowOpenDemandModal = false;
+    },
+    updateModalKey(value=true) {
+      this.isAllowOpenDemandModal = value;
     }
   },
   watch: {
