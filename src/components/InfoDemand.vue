@@ -1,17 +1,35 @@
 <template>
-    <BForm v-if="demand">
-        <BFormInput class="form-inputs" v-model="demand.title" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.description" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.observation" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.type" disabled/>
-        <hr>
-        <BFormInput class="form-inputs" v-model="demand.uf" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.city" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.district" disabled/>
-        <BFormInput class="form-inputs" v-model="demand.street" disabled/>
-        <hr>
-        <BButton variant="primary" @click="close">Fechar</BButton>
-    </BForm>
+    <div>
+        <BForm v-if="demand">
+            <BFormGroup label="Titulo">
+                <BFormInput class="form-inputs" v-model="demand.title" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Descrição">
+                <BFormInput class="form-inputs" v-model="demand.description" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Observação">
+                <BFormInput class="form-inputs" v-model="demand.observation" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Tipo">
+                <BFormInput class="form-inputs" v-model="demand.type" disabled/>
+            </BFormGroup>
+            <hr>
+            <BFormGroup label="UF">
+                <BFormInput class="form-inputs" v-model="demand.uf" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Cidade">
+                <BFormInput class="form-inputs" v-model="demand.city" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Bairro">
+                <BFormInput class="form-inputs" v-model="demand.district" disabled/>
+            </BFormGroup>
+            <BFormGroup label="Rua">
+                <BFormInput class="form-inputs" v-model="demand.street" disabled/>
+            </BFormGroup>
+            <hr>
+            <BButton variant="primary" @click="close">Fechar</BButton>
+        </BForm>
+    </div>
 </template>
 <script lang="ts">
 import Demand from '@/model/Demand';
@@ -30,6 +48,7 @@ export default {
             this.isOpen = true;
         },
         close() {
+            this.demand = null;
             this.isOpen = false;
         }
     }
