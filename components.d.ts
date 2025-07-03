@@ -15,6 +15,7 @@ declare module 'vue' {
     BFormSelect: typeof import('bootstrap-vue-next/components/BFormSelect')['BFormSelect']
     BModal: typeof import('bootstrap-vue-next/components/BModal')['BModal']
     DemandModal: typeof import('./src/components/DemandModal.vue')['default']
+    DemandTypeSelect: typeof import('./src/components/shared/DemandTypeSelect.vue')['default']
     Home: typeof import('./src/components/Home.vue')['default']
     InfoDemand: typeof import('./src/components/InfoDemand.vue')['default']
     InfoModal: typeof import('./src/components/InfoModal.vue')['default']

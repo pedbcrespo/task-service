@@ -22,14 +22,7 @@
           placeholder="Observação"
           :disabled="disabled"
           />
-          <BFormSelect
-          class="form-inputs"
-          v-model="demand.type"
-          placeholder="Selecione a classeficação da demanda"
-          :options="arrDemandTypes"
-          required
-          :disabled="disabled"
-          />
+          <DemandTypeSelect v-model="demand.type"/>
         </BFormGroup>
         <BButton v-show="!disabled" variant="primary" @click="save">Salvar</BButton>
       </BForm>
@@ -37,10 +30,9 @@
 </template>
 
 <script lang="ts">
-import { arrDemandTypes } from '@/enums/DemandType';
 import Address from '@/model/Address';
 import Demand from '@/model/Demand';
-
+import DemandTypeSelect from './shared/DemandTypeSelect.vue';
 export default {
   props:{
     isAllowOpen: {
@@ -52,8 +44,7 @@ export default {
     return {
       isModalOpen: false,
       disabled: false,
-      demand: null,
-      arrDemandTypes,
+      demand: new Demand(null),
     };
   },
   methods: {
