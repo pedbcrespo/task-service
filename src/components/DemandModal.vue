@@ -33,6 +33,8 @@
 import Address from '@/model/Address';
 import Demand from '@/model/Demand';
 import DemandTypeSelect from './shared/DemandTypeSelect.vue';
+import CityDataCenterService from '@/service/CityDataCenterService';
+
 export default {
   props:{
     isAllowOpen: {
@@ -45,6 +47,7 @@ export default {
       isModalOpen: false,
       disabled: false,
       demand: new Demand(null),
+      service: new CityDataCenterService(),
     };
   },
   methods: {
@@ -58,6 +61,7 @@ export default {
       this.isModalOpen = true && this.isAllowOpen;
     },
     save() {
+      this.service.saveDemand(this.demand);
       this.$emit('updateDemands', this.demand);
       this.isModalOpen = false;
     },

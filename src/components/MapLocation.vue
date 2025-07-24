@@ -1,5 +1,5 @@
 <template>
-    <div class="map-location">
+    <div class="home map-location">
         <l-map
           style="height: 400px;"
           :zoom="zoom"
@@ -28,6 +28,7 @@ import Address from '@/model/Address'
 import AddressService from '@/service/AddressService'
 import DemandModal from './DemandModal.vue'
 import InfoDemand from './InfoDemand.vue'
+import CityDataCenterService from '@/service/CityDataCenterService'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -55,6 +56,7 @@ export default {
       demands: [],
       address: new Address(),
       addressService: new AddressService(),
+      demandService: new CityDataCenterService(),
       isAllowOpenDemandModal: true,
     }
   },
@@ -71,6 +73,9 @@ export default {
   } else {
     console.warn('Geolocalização não suportada pelo navegador.')
   }
+  this.demandService.getDemands().then(res => {
+    this.demands = res.data;
+  })
   },
   methods: {
     onMapClick(e) {
